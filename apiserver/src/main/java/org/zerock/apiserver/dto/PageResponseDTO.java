@@ -2,6 +2,7 @@ package org.zerock.apiserver.dto;
 
 // 페이징이 필요한 모든 게시판 다 써먹을 수 있다.
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -28,7 +29,8 @@ public class PageResponseDTO<E> {  // E = 엘리먼트  응답 프론트쪽에 �
     // 총데이터가 몇개인지,  시작번호, 다음번호? ,  전체페이지,  현재페이지
     // 토탈값이 있어야 페이징처리가 가능하다.
 
-    
+
+    @Builder(builderMethodName = "withAll")
     // 얘는 커스텀 생성자 페이징처리하는 로직
     public PageResponseDTO(List<E> dtolist, PageRequestDTO pageRequestDTO, long total){
 

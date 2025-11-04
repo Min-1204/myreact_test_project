@@ -2,6 +2,8 @@ package org.zerock.apiserver.service;
 
 import jakarta.transaction.Transactional;
 import org.zerock.apiserver.domain.Todo;
+import org.zerock.apiserver.dto.PageRequestDTO;
+import org.zerock.apiserver.dto.PageResponseDTO;
 import org.zerock.apiserver.dto.TodoDTO;
 
 @Transactional
@@ -9,15 +11,24 @@ public interface TodoService {
 
     // 조회
     TodoDTO get(Long tno); // DTO 반환
+    // Todo정보를 담은 DTO 이다.
+    // 매개변수로 Long 의 tno 이란 아이
 
     // 등록
     Long register(TodoDTO dto); // 번호
+    // TodoDTO 등록할 Todo 정보
+    // 반환타입이 Long 이다.
 
     // 수정
     void modify(TodoDTO dto);
+    // void 이므로 반환값 없음.
 
     // 삭제
     void remove(Long tno);
+    // void 이므로 반환값 없음.
+
+    // PageRequestDTO를 받아서 return PageResponseDTO를 반환하게하는 메서드
+    PageResponseDTO<TodoDTO> getList (PageRequestDTO pageRequestDTO);
 
 
     // 원래 인터페이스는 기능을 못가지는 실체가 없는데
