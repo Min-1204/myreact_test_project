@@ -2,12 +2,17 @@ package org.zerock.apiserver.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.zerock.apiserver.domain.Todo;
+import org.zerock.apiserver.dto.PageRequestDTO;
+import org.zerock.apiserver.dto.PageResponseDTO;
 import org.zerock.apiserver.dto.TodoDTO;
 import org.zerock.apiserver.repositoty.TodoRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 // Spring Container에 등록 - "이 클래스는 Spring이 관리할게"
@@ -64,4 +69,27 @@ public class TodoServiceImpl implements TodoService {
         todoRepository.deleteById(tno);
 
     }
+
+    @Override
+    public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO) {
+
+        // JPA 관련된 처리를 해야한다.
+        Page<Todo> result = todoRepository.search1(pageRequestDTO);
+
+        // TodoList => TodoDTOList가 되야한다.
+        // result.get()  하면 todo들의 목록이 나온다 => 얘를 가져다가 변환을 해줘야한다
+        List<TodoDTO> dtoList = result.get().map(todo -> entityToDTO(todo)).collect(Collectors.toList());
+
+        PageResponseDTO<TodoDTO> responseDTO =
+                PageResponseDTO.<TodoDTO>withAll()
+                        .dtolist(dtoList)
+                        .pageRequestDTO(pageRequestDTO)
+                        .total(result.getTotalElements())
+                        .build();
+
+        return responseDTO;
+    }
 }
+
+
+// 실행은 서비스가 데이터베이스에서 꺼내오는건 레포지토리가

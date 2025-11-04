@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.apiserver.domain.Todo;
+import org.zerock.apiserver.dto.PageRequestDTO;
 import org.zerock.apiserver.dto.TodoDTO;
+import org.zerock.apiserver.repositoty.TodoRepository;
 
 import java.time.LocalDate;
 
@@ -27,16 +29,24 @@ public class TodoServiceTests {
     @Test
     // 등록
     public void testRegister() {
-        TodoDTO todoDTO = TodoDTO.builder()
-                .title("Title...")
-                .content("Content...")
-                .dueDate(LocalDate.of(2023,12,31))
-                .build();
+        for (int i = 0; i < 100 ; i++) {
+            TodoDTO todoDTO = TodoDTO.builder()
+                    .title("Title..."+ i)
+                    .content("Content..." + i)
+                    .dueDate(LocalDate.of(2023, 12, (int)(Math.random() * 29) + 1))
+                    .build();
 
-        log.info(todoService.register(todoDTO));
+            Long tno = todoService.register(todoDTO);
+            log.info(tno);
+        }
     }
 
-//    @Test
+    @Test
+    public void testGetList() {
 
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().build();
+
+        log.info(todoService.getList(pageRequestDTO));
+    }
 
 }
