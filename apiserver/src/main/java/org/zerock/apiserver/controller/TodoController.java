@@ -2,14 +2,17 @@ package org.zerock.apiserver.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.zerock.apiserver.dto.PageRequestDTO;
 import org.zerock.apiserver.dto.PageResponseDTO;
 import org.zerock.apiserver.dto.TodoDTO;
 import org.zerock.apiserver.service.TodoService;
+
+import java.util.Map;
+
+
+//@CrossOrigin 컨트롤러에다가 직접 CORS설정을 해도 된다. 설정 전체를 잡아줄거라면 따로 CustomServletConfig에 하면된다.
+
 
 // SSR이랑 다른점은 예전에는 같이 쓰는데 지금처럼 API만 만들경우에는 화면이 없기 때문에
 // RestController만 만들어준다.
@@ -37,8 +40,40 @@ public class TodoController {
         log.info("list ............." , pageRequestDTO);
 
         return todoService.getList(pageRequestDTO);
-        
-//        @RestController 어노테이션 공부 시작
+
+    }
+
+
+
+    // JSON 데이터로 받으려면 반드시 필요한게 RequestBody 이다.
+    @PostMapping("/")
+    public Map<String, Long> register(@RequestBody TodoDTO dto) {
+
+        log.info("todoDTO: " , dto);
+
+        Long tno = todoService.register(dto);
+
+        return Map.of("tno", tno);
+
+    }
+
+    @PutMapping("/{tno}")
+    public Map<String, String> modify (@PathVariable("tno") Long tno,
+                                     @RequestBody TodoDTO todoDTO) {
+
+        todoDTO.setTno(tno);
+
+        todoService.modify(todoDTO);
+
+        return Map.of("RESULT", "SUCCESS");
+    }
+
+    @DeleteMapping("/{tno}")
+    public Map<String, String> remove (@PathVariable Long tno) {
+
+        todoService.remove(tno);
+
+        return Map.of("RESULT", "SUCCESS");
 
     }
 
