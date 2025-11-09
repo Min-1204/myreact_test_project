@@ -30,7 +30,7 @@ public class TodoController {
 
     @GetMapping("/{tno}")
     public TodoDTO get(@PathVariable("tno") Long tno) {
-
+        System.out.println("tno" + tno);
         return todoService.get(tno);
     }
 

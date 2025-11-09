@@ -27,8 +27,10 @@ public class CustomServletConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) { // API 서버 개발
         registry.addMapping("/**") //어떤경로에다가 cors를 적용할 것인가 => /**모든경로
-                .allowedOrigins("/*")  // 어디에서부터 들어오는 연결을 허락해줄 것인가 => * 모든곳에서 허락
+                .allowedOrigins("http://localhost:5173")  // 어디에서부터 들어오는 연결을 허락해줄 것인가 => * 모든곳에서 허락
                 .maxAge(500) // 빨리빨리 연결을 안되면 서버에 문제가있는거라고 생각하기때문에 짧게 주었다고한다
+                .allowedHeaders("*")
+                .allowCredentials(true)
                 .allowedMethods("GET","POST","PUT","DELETE","HEAD","OPTIONS"); // 어떤방식의 호출을 허용할 것인가
         // 제일중요한 OPTIONS는 프리플라이트 미리한번 찔러볼때 날라오는 방식이라고 한다.
     }

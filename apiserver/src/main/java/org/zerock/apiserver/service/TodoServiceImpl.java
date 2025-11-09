@@ -55,6 +55,7 @@ public class TodoServiceImpl implements TodoService {
         Todo todo = result.orElseThrow(); // 그 데이터베이스를 꺼내와서
 
         todo.changeTitle(dto.getTitle()); // 그 데이터베이스에 있는 데이터를 바꿔줘서
+        todo.changeWriter(dto.getWriter());
         todo.changeContent(dto.getContent());
         todo.changeComplete(dto.isComplete());
         todo.changeDueDate(dto.getDueDate());

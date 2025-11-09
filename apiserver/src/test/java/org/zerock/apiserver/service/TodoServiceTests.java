@@ -32,6 +32,7 @@ public class TodoServiceTests {
         for (int i = 0; i < 100 ; i++) {
             TodoDTO todoDTO = TodoDTO.builder()
                     .title("Title..."+ i)
+                    .writer("writer" + i)
                     .content("Content..." + i)
                     .dueDate(LocalDate.of(2023, 12, (int)(Math.random() * 29) + 1))
                     .build();
